@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Guru</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            text-align: center;
+        }
+        .header {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff477e;
+            margin-bottom: 10px;
+        }
+        .plan {
+            margin: 10px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .plan .title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        .plan .price {
+            font-size: 16px;
+            color: #666;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        .button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #ff477e;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #ff6d9e;
+        }
+        .chat-section {
+            display: none;
+            margin-top: 20px;
+            text-align: left;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+        .chat-box {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .chat-input button {
+            padding: 10px 20px;
+            background-color: #ff477e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .chat-input button:hover {
+            background-color: #ff6d9e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">Love Guru ❤️</div>
+        <p>Your ultimate relationship and love advice companion!</p>
+
+        <div class="plan">
+            <div class="title">Basic Plan</div>
+            <div class="price">₹199/month</div>
+            <div>Features: Chat with the Love Guru</div>
+        </div>
+
+        <div class="plan">
+            <div class="title">Advance Plan</div>
+            <div class="price">₹499/month</div>
+            <div>Features: Chat + Call + Live Analytics</div>
+        </div>
+
+        <div class="buttons">
+            <a href="#" class="button" onclick="startChat()">Chat with the Love Guru</a>
+            <a href="tel:+919901996172" class="button">Call the Love Guru</a>
+        </div>
+
+        <div class="chat-section" id="chat-section">
+            <div class="chat-box" id="chat-box"></div>
+            <div class="chat-input">
+                <input type="text" id="chat-input" placeholder="Type your message here...">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function startChat() {
+            document.getElementById('chat-section').style.display = 'block';
+        }
+
+        function sendMessage() {
+            const chatBox = document.getElementById('chat-box');
+            const chatInput = document.getElementById('chat-input');
+
+            if (chatInput.value.trim() !== "") {
+                const userMessage = document.createElement('div');
+                userMessage.textContent = chatInput.value;
+                userMessage.style.margin = '5px 0';
+                userMessage.style.textAlign = 'right';
+                chatBox.appendChild(userMessage);
+
+                sendNotificationToGuru(chatInput.value);
+
+                chatInput.value = "";
+
+                setTimeout(() => {
+                    const botMessage = document.createElement('div');
+                    botMessage.textContent = getGuruResponse(userMessage.textContent);
+                    botMessage.style.margin = '5px 0';
+                    botMessage.style.textAlign = 'left';
+                    botMessage.style.color = '#555';
+                    chatBox.appendChild(botMessage);
+                }, 1000);
+            }
+        }
+
+        function sendNotificationToGuru(message) {
+            fetch('https://api.example.com/send-sms', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    phoneNumber: '+91-9901996172',
+                    text: `New message from client: ${message}`
+                }),
+            })
+            .then(response => response.json())
+            .then(data => console.log('Message sent to Love Guru:', data))
+            .catch(error => console.error('Error sending message:', error));
+        }
+
+        function getGuruResponse(message) {
+            // Simple placeholder logic for Love Guru responses
+            const responses = [
+                "That sounds interesting! Can you tell me more?",
+                "Love is a journey, not a destination.",
+                "Communication is key to resolving issues in relationships.",
+                "Always be yourself, that’s the best way to find true love.",
+                "Let’s take it one step at a time.",
+            ];
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+    </script>
+</body>
+</html>
